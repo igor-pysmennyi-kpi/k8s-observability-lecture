@@ -1,0 +1,1 @@
+This repo is dedicated to basic observability setup of k8s
