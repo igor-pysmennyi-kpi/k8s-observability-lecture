@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: producer-deployment
+  labels:
+    app: producer-deployment
+spec:
+  replicas: {{ .Values.app.replicas }}
+  selector:
+    matchLabels:
+      app: producer-deployment
+  template:
+    metadata:
+      labels:
+        app: producer-deployment
+    spec:
+      containers:
+      - name: producer
+        image: ihor-p/producer-random:1.0
+        
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: producer
+  labels:
+    app: producer
+spec:
+  type: NodePort
+  ports:
+  - port: {{ .Values.app.port }}
+    targetPort: {{ .Values.app.port }}
+    nodePort: 30001
+    protocol: TCP
+    name: api
+  selector:
+    app: producer-deployment
+    

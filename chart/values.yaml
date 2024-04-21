@@ -1,0 +1,5 @@
+# this is default values for the chart another file or values can be used on build pipeline
+app:
+  replicas: 1
+  port: 5000
+  

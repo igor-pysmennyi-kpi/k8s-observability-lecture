@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: consumer-deployment
+  labels:
+    app: consumer-deployment
+spec:
+  replicas: {{ .Values.app.replicas }}
+  selector:
+    matchLabels:
+      app: consumer-deployment
+  template:
+    metadata:
+      labels:
+        app: consumer-deployment
+    spec:
+      containers:
+      - name: consumer
+        image: ihor-p/consumer-random:1.0
+        env:
+        - name: SERVICE_RANDOM_HOST
+          value: "http://producer"
+        - name: SERVICE_RANDOM_PORT
+          value: "{{ .Values.app.port }}"
+          
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: consumer
+  labels:
+    app: consumer
+spec:
+  type: NodePort
+  ports:
+  - port: {{ .Values.app.port }}
+    targetPort: {{ .Values.app.port }}
+    nodePort: 30002
+    protocol: TCP
+    name: api
+  selector:
+    app: consumer-deployment

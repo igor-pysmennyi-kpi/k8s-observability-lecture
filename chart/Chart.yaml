@@ -1,0 +1,6 @@
+apiVersion: v2
+name: random-app
+description: A Helm chart for whole random app (client and server)
+type: application #can also be library. Library charts are not installable and are intended to be used as a dependency of other charts. They're used to share common snippets of code and templates across multiple charts.
+version: 1.0.1 #chart v tell guys bout SemVer2 
+appVersion: "1.0" #v of app 
