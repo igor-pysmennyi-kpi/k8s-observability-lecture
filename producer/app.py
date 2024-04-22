@@ -2,11 +2,16 @@ from flask import Flask, jsonify
 import time
 import random
 import logging
+from prometheus_flask_exporter import PrometheusMetrics
+
 
 logging.basicConfig(level=logging.DEBUG, format='producer_service - %(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 
 app = Flask(__name__)
+metrics = PrometheusMetrics(app)
+metrics.info('app_info', 'Producer', version='1.0')
+
 
 @app.route('/random', methods=['GET'])
 def handle():

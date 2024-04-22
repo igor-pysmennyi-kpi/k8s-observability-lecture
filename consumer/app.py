@@ -3,11 +3,16 @@ from config import Config
 import logging
 import time
 import requests
+from prometheus_flask_exporter import PrometheusMetrics
+
 
 logging.basicConfig(level=logging.DEBUG, format='consumer_service - %(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 
 app = Flask(__name__)
+
+metrics = PrometheusMetrics(app)
+metrics.info('app_info', 'Consumer', version='1.0')
 
 @app.route('/', methods=['GET'])
 def handle():

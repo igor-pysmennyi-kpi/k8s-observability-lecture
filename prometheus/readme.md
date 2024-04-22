@@ -17,3 +17,4 @@ helm install grafana grafana/grafana
 
 kubectl get secret --namespace default grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
 ```
+add dashboard <https://github.com/ramdesh/flask-prometheus-grafana-example/blob/master/monitoring/grafana_dashboard.json>
