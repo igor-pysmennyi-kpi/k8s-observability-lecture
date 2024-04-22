@@ -14,6 +14,9 @@ logstashConfig: {}
 #    key = value
 
 # Allows you to add any pipeline files in /usr/share/logstash/pipeline/
+#producer_service - 2024-04-22 07:20:02,570 - app - INFO - Generating random number
+#        match => { "message" => "%{NOTSPACE:service_name} - %{YEAR}-%{MONTHNUM}-%{MONTHDAY} %{TIME} - %{NOTSPACE:name} - %{LOGLEVEL:log_level} - %{GREEDYDATA:message}" }
+
 ### ***warn*** there is a hardcoded logstash.conf in the image, override it first
 logstashPipeline:
   logstash.conf: |
@@ -24,15 +27,8 @@ logstashPipeline:
     }
     filter {
       grok {
-        match => { "message" => "%{DATA:service_name} - %{YEAR}-%{MONTHNUM}-%{MONTHDAY} %{TIME} - %{DATA:name} - %{LOGLEVEL:loglevel} - %{GREEDYDATA:message}" }
-      }
-      mutate {
-        add_field => { 
-          "timestamp" => "%{year}-%{month}-%{day} %{time}",
-          "service" => "%{service_name}",
-          "level" => "%{loglevel}",
-          "test" => "test"
-        }
+        match => { "message" => "%{NOTSPACE:service_name} - %{YEAR}-%{MONTHNUM}-%{MONTHDAY} %{TIME} - %{NOTSPACE:name} - %{LOGLEVEL:log_level} - %{GREEDYDATA:message}" }
+        add_tag => [ "%{service_name}" ]
       }
       date {
         match => [ "timestamp", "yyyy-MM-dd HH:mm:ss,SSS" ]
